@@ -1,0 +1,17 @@
+{
+  "version": "0.0.0",
+  "name": "@xyz/color",
+  "description": "color",
+  "repository": {
+    "type": "git",
+    "url": "git:repos/color"
+  },
+  "main": "src/index.js",
+  "exports": {
+    "./": "./src/"
+  },
+  "scripts": {
+    "test": "./scripts/run-tests.sh"
+  },
+  "license": "ISC"
+}
