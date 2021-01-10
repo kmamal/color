@@ -1,5 +1,5 @@
 
-const cubehelix = (options = {}) => {
+const makeCubehelix = (options = {}) => {
 	const {
 		start = 300,
 		rotations = -1.5,
@@ -8,31 +8,32 @@ const cubehelix = (options = {}) => {
 		lightness: _lightness = [ 0, 1 ],
 	} = options
 
-	const lightness = Array.isArray(_lightness) ? _lightness : [ _lightness, _lightness ]
-	const hue = Array.isArray(_hue) ? _hue : [ _hue, _hue ]
+	const [ lightness_start, lightness_end ] = !Array.isArray(_lightness)
+		? [ _lightness, _lightness ]
+		: _lightness
+	const lightness_range = lightness_end - lightness_start
 
-	const sl = lightness[0]
-	const dl = lightness[1] - lightness[0]
-
-	const sh = hue[0]
-	const dh = hue[1] - hue[0]
+	const [ hue_start, hue_end ] = !Array.isArray(_hue)
+		? [ _hue, _hue ]
+		: _hue
+	const hue_range = hue_end - hue_start
 
 	return (x) => {
-		const a = Math.PI * 2 * ((start + 120) / 360 + rotations * x)
-		const l = (sl + dl * x) ** gamma
-		const h = sh + x * dh
+		const angle = Math.PI * 2 * (start / 3 + rotations * x)
+		const lightness = (lightness_start + lightness_range * x) ** gamma
+		const hue = hue_start + x * hue_range
 
-		const amp = h * l * (1 - l) / 2
+		const amp = hue * lightness * (1 - lightness) / 2
 
-		const cos_a = Math.cos(a)
-		const sin_a = Math.sin(a)
+		const cos = Math.cos(angle)
+		const sin = Math.sin(angle)
 
-		const r = Math.max(0, Math.min(1, l + amp * (-0.14861 * cos_a + 1.78277 * sin_a)))
-		const g = Math.max(0, Math.min(1, l + amp * (-0.29227 * cos_a - 0.90649 * sin_a)))
-		const b = Math.max(0, Math.min(1, l + amp * (+1.97294 * cos_a)))
+		const r = Math.max(0, Math.min(1, lightness + amp * (-0.14861 * cos + 1.78277 * sin)))
+		const g = Math.max(0, Math.min(1, lightness + amp * (-0.29227 * cos - 0.90649 * sin)))
+		const b = Math.max(0, Math.min(1, lightness + amp * (+1.97294 * cos)))
 
 		return { r, g, b }
 	}
 }
 
-module.exports = { cubehelix }
+module.exports = { makeCubehelix }
