@@ -1,7 +1,7 @@
 
 const makeCubehelix = (options = {}) => {
 	const {
-		start = 300,
+		start = 0.5,
 		rotations = -1.5,
 		hue: _hue = 1,
 		gamma = 1,
