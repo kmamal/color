@@ -42,7 +42,7 @@ export default class Rgb extends Color<Rgb> {
 
 	static fromHex (hex: string) {
 		if (hex[0] === '#') { hex = hex.slice(1) }
-		if (hex.length !== 6) { throw new Error('hex length is not 6') }
+		if (hex.length !== 6) { throw new Error("hex length is not 6") }
 		const r = parseInt(hex.slice(0, 2), 16)
 		const g = parseInt(hex.slice(2, 4), 16)
 		const b = parseInt(hex.slice(4, 6), 16)
