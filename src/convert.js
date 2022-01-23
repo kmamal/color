@@ -1,30 +1,82 @@
 const { guessType } = require('./type')
 const HSV = require('./hsv')
 const HSL = require('./hsl')
+const OKLAB = require('./oklab')
 
-const rgb2hsv = (rgb) => HSV.fromRGB(rgb)
-const hsv2rgb = (hsv) => HSV.toRGB(hsv)
+const types = [
+	'rgb',
+	'hsv',
+	'hsl',
+	'oklab',
+]
 
-const rgb2hsl = (rgb) => HSL.fromHSV(HSV.fromRGB(rgb))
-const hsl2rgb = (hsl) => HSV.toRGB(HSL.toHSV(hsl))
-
-const hsv2hsl = (hsv) => HSL.fromHSV(hsv)
-const hsl2hsv = (hsl) => HSL.toHSV(hsl)
-
-
-const methods = {
+const primaries = {
 	rgb: {
-		hsv: rgb2hsv,
-		hsl: rgb2hsl,
+		hsv: HSV.fromRGB,
+		oklab: OKLAB.fromRGB,
 	},
 	hsv: {
-		rgb: hsv2rgb,
-		hsl: hsv2hsl,
+		rgb: HSV.toRGB,
+		hsl: HSL.fromHSV,
 	},
 	hsl: {
-		rgb: hsl2rgb,
-		hsv: hsl2hsv,
+		hsv: HSL.toHSV,
 	},
+	oklab: {
+		rgb: OKLAB.toRGB,
+	},
+}
+
+const methods = Object.fromEntries(types.map((type) => [ type, {} ]))
+
+{
+	let missing = false
+	for (const a of types) {
+		for (const b of types) {
+			if (a === b) { continue }
+			const primary = primaries[a][b]
+			if (primary) {
+				methods[a][b] = primary
+			} else {
+				missing = true
+			}
+		}
+	}
+
+	while (missing) {
+		missing = false
+		let foundSome = false
+
+		for (const a of types) {
+			for (const b of types) {
+				if (a === b) { continue }
+				if (methods[a][b]) { continue }
+
+				let found = false
+				for (const c of types) {
+					const method = methods[a][c]
+					if (!method) { continue }
+					const primary = primaries[c][b]
+					if (!primary) { continue }
+					methods[a][b] = (x) => primary(method(x))
+					found = true
+					break
+				}
+
+				if (found) {
+					foundSome = true
+				} else {
+					missing = true
+				}
+			}
+		}
+
+		if (!foundSome) {
+			const error = new Error("missing conversion functions")
+			error.methods = methods
+			throw error
+		}
+	}
 }
 
 const _convert = (a, aType, bType) => {
@@ -54,7 +106,6 @@ const convert = (a, type) => {
 }
 
 module.exports = {
-	rgb2hsv,
-	hsv2rgb,
+	methods,
 	convert,
 }

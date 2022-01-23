@@ -17,8 +17,10 @@
     "./rgb": "./src/rgb.js",
     "./scale": "./src/scale.js",
     "./type": "./src/type.js",
+    "./names": "./src/names.js",
     "./convert": "./src/convert.js",
     "./cubehelix": "./src/cubehelix.js",
+    "./oklab": "./src/oklab.js",
     "./hsl": "./src/hsl.js"
   },
   "dependencies": {

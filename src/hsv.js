@@ -6,22 +6,7 @@ const {
 // - h [0-3)
 // - s [0-1]
 // - v [0-1]
-// - a* [0-1]
-
-const fromName = (name) => {
-	switch (name) {
-		case 'black': return { h: 0, s: 0, v: 0 }
-		case 'white': return { h: 0, s: 0, v: 1 }
-		case 'gray': return { h: 0, s: 0, v: 0.5 }
-		case 'red': return { h: 0, s: 1, v: 1 }
-		case 'green': return { h: 1, s: 1, v: 1 }
-		case 'blue': return { h: 2, s: 1, v: 1 }
-		case 'yellow': return { h: 0.5, s: 1, v: 1 }
-		case 'cyan': return { h: 1.5, s: 1, v: 1 }
-		case 'magenta': return { h: 2.5, s: 1, v: 1 }
-		default: return null
-	}
-}
+// - alpha* [0-1]
 
 const _interpolateHue = (a, b, ratio) => {
 	const ah = a.h
@@ -44,10 +29,10 @@ const interpolate = (a, b, ratio) => ({
 	h: _interpolateHue(a, b, ratio),
 	s: _isSingular(a) ? b.s : _isSingular(b) ? a.s : interpolateNumber(a.s, b.s, ratio),
 	v: interpolateNumber(a.v, b.v, ratio),
-	a: interpolateNumber(a.a ?? 1, b.a ?? 1, ratio),
+	alpha: interpolateNumber(a.alpha ?? 1, b.alpha ?? 1, ratio),
 })
 
-const toRGB = ({ h, s, v, a = 1 }) => {
+const toRGB = ({ h, s, v, alpha = 1 }) => {
 	const high = v
 	const low = high * (1 - s)
 
@@ -82,10 +67,10 @@ const toRGB = ({ h, s, v, a = 1 }) => {
 		g = low
 	}
 
-	return { r, g, b, a }
+	return { r, g, b, alpha }
 }
 
-const fromRGB = ({ r, g, b, a = 1 }) => {
+const fromRGB = ({ r, g, b, alpha = 1 }) => {
 	let high
 	let mid
 	let low
@@ -137,7 +122,7 @@ const fromRGB = ({ r, g, b, a = 1 }) => {
 	}
 	/* eslint-enable no-lonely-if */
 
-	if (high === low) { return { h: 0, s: 0, v: high, a } }
+	if (high === low) { return { h: 0, s: 0, v: high, alpha } }
 
 	let h = center + direction * (mid - low) / (high - low)
 	const v = high
@@ -145,11 +130,10 @@ const fromRGB = ({ r, g, b, a = 1 }) => {
 
 	if (h === 3) { h = 0 }
 
-	return { h, s, v, a }
+	return { h, s, v, alpha }
 }
 
 module.exports = {
-	fromName,
 	_interpolateHue,
 	interpolate,
 	toRGB,

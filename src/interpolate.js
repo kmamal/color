@@ -3,11 +3,13 @@ const { _convert } = require('./convert')
 const RGB = require('./rgb')
 const HSV = require('./hsv')
 const HSL = require('./hsl')
+const OKLAB = require('./oklab')
 
 const methods = {
 	rgb: RGB.interpolate,
 	hsv: HSV.interpolate,
 	hsl: HSL.interpolate,
+	oklab: OKLAB.interpolate,
 }
 
 const _interpolate = (_a, aType, _b, bType, cType) => {
