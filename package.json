@@ -6,12 +6,20 @@
     "type": "git",
     "url": "git@github.com:kmamal/color.git"
   },
-  "main": "src/index.js",
-  "exports": {
-    "./": "./src/"
-  },
+  "license": "MIT",
   "scripts": {
-    "test": "./scripts/run-tests.sh"
+    "test": "./scripts/run-tests.sh",
+    "update-exports": "./scripts/update-exports.sh"
   },
-  "license": "MIT"
+  "exports": {
+    "./hsv": "./src/hsv.js",
+    "./interpolate": "./src/interpolate.js",
+    "./rgb": "./src/rgb.js",
+    "./scale": "./src/scale.js",
+    "./convert": "./src/convert.js",
+    "./cubehelix": "./src/cubehelix.js"
+  },
+  "dependencies": {
+    "@kmamal/util": "^0.0.73"
+  }
 }

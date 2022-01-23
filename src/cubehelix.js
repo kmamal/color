@@ -8,20 +8,20 @@ const makeCubehelix = (options = {}) => {
 		lightness: _lightness = [ 0, 1 ],
 	} = options
 
-	const [ lightness_start, lightness_end ] = !Array.isArray(_lightness)
+	const [ lightnessStart, lightnessEnd ] = !Array.isArray(_lightness)
 		? [ _lightness, _lightness ]
 		: _lightness
-	const lightness_range = lightness_end - lightness_start
+	const lightnessRange = lightnessEnd - lightnessStart
 
-	const [ hue_start, hue_end ] = !Array.isArray(_hue)
+	const [ hueStart, hueEnd ] = !Array.isArray(_hue)
 		? [ _hue, _hue ]
 		: _hue
-	const hue_range = hue_end - hue_start
+	const hueRange = hueEnd - hueStart
 
 	return (x) => {
 		const angle = Math.PI * 2 * (start / 3 + rotations * x)
-		const lightness = (lightness_start + lightness_range * x) ** gamma
-		const hue = hue_start + x * hue_range
+		const lightness = (lightnessStart + lightnessRange * x) ** gamma
+		const hue = hueStart + x * hueRange
 
 		const amp = hue * lightness * (1 - lightness) / 2
 
