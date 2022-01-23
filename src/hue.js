@@ -4,7 +4,6 @@ const {
 
 const interpolateHue = (a, b, ratio, R) => {
 	const d = Math.abs(a - b)
-	if (ratio === 0.5) { console.log({ a, b, R, d }) }
 	if (d <= R / 2) { return interpolateNumber(a, b, ratio) }
 
 	return a <= b
