@@ -1,65 +1,43 @@
-const { guessType } = require('./types')
-const HSV = require('./hsv')
-const HSL = require('./hsl')
-const OKLAB = require('./oklab')
-const OKLCH = require('./oklch')
+const Types = require('./types')
+const { guessType } = require('./guess-type')
 
-const types = [
-	'rgb',
-	'hsv',
-	'hsl',
-	'oklab',
-	'oklch',
-]
-
-const primaries = {
-	rgb: {
-		hsv: HSV.fromRGB,
-		oklab: OKLAB.fromRGB,
-	},
-	hsv: {
-		rgb: HSV.toRGB,
-		hsl: HSL.fromHSV,
-	},
-	hsl: {
-		hsv: HSL.toHSV,
-	},
-	oklab: {
-		rgb: OKLAB.toRGB,
-		oklch: OKLCH.fromOKLAB,
-	},
-	oklch: {
-		oklab: OKLCH.toOKLAB,
-	},
-}
-
-const methods = Object.fromEntries(types.map((type) => [ type, {} ]))
+const typeNames = Object.keys(Types)
+const methods = Object.fromEntries(typeNames.map((type) => [ type, {} ]))
 
 {
-	let missing = false
-	for (const a of types) {
-		for (const b of types) {
-			if (a === b) { continue }
-			const primary = primaries[a][b]
-			if (primary) {
-				methods[a][b] = primary
+	const primaries = Object.fromEntries(typeNames.map((type) => [ type, {} ]))
+	const pattern = /^(?<direction>from|to)(?<_b>[A-Z]+)$/u
+
+	let count = 0
+	for (const [ a, obj ] of Object.entries(Types)) {
+		for (const [ name, method ] of Object.entries(obj)) {
+			const match = name.match(pattern)
+			if (!match) { continue }
+			const { groups: { direction, _b } } = match
+			const b = _b.toLowerCase()
+			if (direction === 'to') {
+				primaries[a][b] = methods[a][b] = method
 			} else {
-				missing = true
+				primaries[b][a] = methods[b][a] = method
 			}
+			count++
 		}
 	}
+
+	const num = typeNames
+	let missing = count !== num * (num - 1)
 
 	while (missing) {
 		missing = false
 		let foundSome = false
 
-		for (const a of types) {
-			for (const b of types) {
+		for (const a of typeNames) {
+			for (const b of typeNames) {
 				if (a === b) { continue }
 				if (methods[a][b]) { continue }
 
 				let found = false
-				for (const c of types) {
+				for (const c of typeNames) {
 					const method = methods[a][c]
 					if (!method) { continue }
 					const primary = primaries[c][b]

@@ -1,4 +1,4 @@
-const { guessType } = require('./type')
+const { guessType } = require('./types')
 const { convert } = require('./convert')
 const { methods } = require('./interpolate')
 const { binarySearch } = require('@kmamal/util/array/search/binary')

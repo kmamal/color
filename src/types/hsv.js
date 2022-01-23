@@ -1,6 +1,7 @@
 const {
 	interpolate: interpolateNumber,
 } = require('@kmamal/util/number/interpolate')
+const { interpolateHue } = require('../hue')
 
 // HSV COLOR
 // - h [0-3)
@@ -8,25 +9,15 @@ const {
 // - v [0-1]
 // - alpha* [0-1]
 
-const _interpolateHue = (a, b, ratio) => {
-	const ah = a.h
-	const bh = b.h
-
-	if (a.s === 0) { return bh }
-	if (b.s === 0) { return ah }
-
-	const d = Math.abs(ah - bh)
-	if (d <= 1.5) { return interpolateNumber(ah, bh, ratio) }
-
-	return ah <= bh
-		? interpolateNumber(3 + ah, bh, ratio) % 3
-		: interpolateNumber(ah, 3 + bh, ratio) % 3
-}
+const isMember = (x) => true
+	&& x.h !== undefined
+	&& x.s !== undefined
+	&& x.v !== undefined
 
 const _isSingular = (a) => a.s === 0 && a.v === 0
 
 const interpolate = (a, b, ratio) => ({
-	h: _interpolateHue(a, b, ratio),
+	h: a.s === 0 ? b.h : b.s === 0 ? a.h : interpolateHue(a.h, b.h, ratio, 3),
 	s: _isSingular(a) ? b.s : _isSingular(b) ? a.s : interpolateNumber(a.s, b.s, ratio),
 	v: interpolateNumber(a.v, b.v, ratio),
 	alpha: interpolateNumber(a.alpha ?? 1, b.alpha ?? 1, ratio),
@@ -134,7 +125,7 @@ const fromRGB = ({ r, g, b, alpha = 1 }) => {
 }
 
 module.exports = {
-	_interpolateHue,
+	isMember,
 	interpolate,
 	toRGB,
 	fromRGB,

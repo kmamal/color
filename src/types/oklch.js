@@ -1,6 +1,7 @@
 const {
 	interpolate: interpolateNumber,
 } = require('@kmamal/util/number/interpolate')
+const { interpolateHue } = require('../hue')
 
 // HSV COLOR
 // - L
@@ -8,10 +9,17 @@ const {
 // - h
 // - alpha* [0-1]
 
+const isMember = (x) => true
+	&& x.L !== undefined
+	&& x.C !== undefined
+	&& x.h !== undefined
+
+const TWO_PI = 2 * Math.PI
+
 const interpolate = (a, b, ratio) => ({
 	L: interpolateNumber(a.L, b.L, ratio),
-	a: interpolateNumber(a.C, b.C, ratio),
-	b: interpolateNumber(a.h, b.h, ratio),
+	C: interpolateNumber(a.C, b.C, ratio),
+	h: interpolateHue(a.h, b.h, ratio, TWO_PI),
 	alpha: interpolateNumber(a.a ?? 1, b.a ?? 1, ratio),
 })
 
@@ -28,6 +36,7 @@ const fromOKLAB = ({ L, a, b, alpha = 1 }) => {
 }
 
 module.exports = {
+	isMember,
 	interpolate,
 	toOKLAB,
 	fromOKLAB,

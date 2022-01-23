@@ -8,6 +8,11 @@ const {
 // - b [0-1]
 // - alpha* [0-1]
 
+const isMember = (x) => true
+	&& x.r !== undefined
+	&& x.g !== undefined
+	&& x.b !== undefined
+
 const interpolate = (a, b, ratio) => ({
 	r: interpolateNumber(a.r, b.r, ratio),
 	g: interpolateNumber(a.g, b.g, ratio),
@@ -16,5 +21,6 @@ const interpolate = (a, b, ratio) => ({
 })
 
 module.exports = {
+	isMember,
 	interpolate,
 }

@@ -8,6 +8,11 @@ const {
 // - b
 // - alpha* [0-1]
 
+const isMember = (x) => true
+	&& x.L !== undefined
+	&& x.a !== undefined
+	&& x.b !== undefined
+
 const interpolate = (a, b, ratio) => ({
 	L: interpolateNumber(a.L, b.L, ratio),
 	a: interpolateNumber(a.a, b.a, ratio),
@@ -50,6 +55,7 @@ const fromRGB = ({ r, g, b, alpha = 1 }) => {
 }
 
 module.exports = {
+	isMember,
 	interpolate,
 	toRGB,
 	fromRGB,

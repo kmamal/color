@@ -1,17 +1,11 @@
-const { guessType } = require('./types')
+const Types = require('./types')
 const { _convert } = require('./convert')
-const RGB = require('./rgb')
-const HSV = require('./hsv')
-const HSL = require('./hsl')
-const OKLAB = require('./oklab')
-const OKLCH = require('./oklch')
+const { guessType } = require('./guess-type')
 
-const methods = {
-	rgb: RGB.interpolate,
-	hsv: HSV.interpolate,
-	hsl: HSL.interpolate,
-	oklab: OKLAB.interpolate,
-	oklch: OKLCH.interpolate,
+const methods = {}
+
+for (const [ type, { interpolate } ] of Object.entries(Types)) {
+	methods[type] = interpolate
 }
 
 const _interpolate = (_a, aType, _b, bType, cType) => {
