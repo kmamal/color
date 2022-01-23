@@ -1,13 +1,15 @@
-const { guessType } = require('./type')
+const { guessType } = require('./types')
 const HSV = require('./hsv')
 const HSL = require('./hsl')
 const OKLAB = require('./oklab')
+const OKLCH = require('./oklch')
 
 const types = [
 	'rgb',
 	'hsv',
 	'hsl',
 	'oklab',
+	'oklch',
 ]
 
 const primaries = {
@@ -24,6 +26,10 @@ const primaries = {
 	},
 	oklab: {
 		rgb: OKLAB.toRGB,
+		oklch: OKLCH.fromOKLAB,
+	},
+	oklch: {
+		oklab: OKLCH.toOKLAB,
 	},
 }
 

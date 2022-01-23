@@ -3,9 +3,9 @@ const {
 } = require('@kmamal/util/number/interpolate')
 
 // HSV COLOR
-// - L [0-3)
-// - a [0-1]
-// - b [0-1]
+// - L
+// - a
+// - b
 // - alpha* [0-1]
 
 const interpolate = (a, b, ratio) => ({
@@ -14,7 +14,6 @@ const interpolate = (a, b, ratio) => ({
 	b: interpolateNumber(a.b, b.b, ratio),
 	alpha: interpolateNumber(a.a ?? 1, b.a ?? 1, ratio),
 })
-
 
 const toRGB = ({ L, a, b, alpha = 1 }) => {
 	const l_ = L + 0.3963377774 * a + 0.2158037573 * b
