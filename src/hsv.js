@@ -23,29 +23,29 @@ const fromName = (name) => {
 	}
 }
 
-const interpolate = (a, b, ratio) => {
+const _interpolateHue = (a, b, ratio) => {
 	const ah = a.h
 	const bh = b.h
-	let h1
-	let h2
-	if (ah < bh) {
-		h1 = ah
-		h2 = bh
-	} else {
-		h1 = bh
-		h2 = ah
-	}
-	const distance = h2 - h1
-	const h = distance < 0.5
-		? interpolateNumber(h1, h2, ratio)
-		: interpolateNumber(h2, 1 + h1, ratio) % 3
-	return {
-		h,
-		s: interpolateNumber(a.v, b.v, ratio),
-		v: interpolateNumber(a.v, b.v, ratio),
-		a: interpolateNumber(a.a ?? 1, b.a ?? 1, ratio),
-	}
+
+	if (a.s === 0) { return bh }
+	if (b.s === 0) { return ah }
+
+	const d = Math.abs(ah - bh)
+	if (d <= 1.5) { return interpolateNumber(ah, bh, ratio) }
+
+	return ah <= bh
+		? interpolateNumber(3 + ah, bh, ratio) % 3
+		: interpolateNumber(ah, 3 + bh, ratio) % 3
 }
+
+const _isSingular = (a) => a.s === 0 && a.v === 0
+
+const interpolate = (a, b, ratio) => ({
+	h: _interpolateHue(a, b, ratio),
+	s: _isSingular(a) ? b.s : _isSingular(b) ? a.s : interpolateNumber(a.s, b.s, ratio),
+	v: interpolateNumber(a.v, b.v, ratio),
+	a: interpolateNumber(a.a ?? 1, b.a ?? 1, ratio),
+})
 
 const toRGB = ({ h, s, v, a = 1 }) => {
 	const high = v
@@ -91,6 +91,7 @@ const fromRGB = ({ r, g, b, a = 1 }) => {
 	let low
 	let center
 	let direction
+
 	/* eslint-disable no-lonely-if */
 	if (r > g) {
 		if (r > b) {
@@ -111,7 +112,7 @@ const fromRGB = ({ r, g, b, a = 1 }) => {
 			mid = r
 			low = g
 			center = 2
-			direction = -0.5
+			direction = 0.5
 		}
 	} else {
 		if (g > b) {
@@ -136,6 +137,8 @@ const fromRGB = ({ r, g, b, a = 1 }) => {
 	}
 	/* eslint-enable no-lonely-if */
 
+	if (high === low) { return { h: 0, s: 0, v: high, a } }
+
 	let h = center + direction * (mid - low) / (high - low)
 	const v = high
 	const s = high === 0 ? 0 : 1 - (low / high)
@@ -147,6 +150,7 @@ const fromRGB = ({ r, g, b, a = 1 }) => {
 
 module.exports = {
 	fromName,
+	_interpolateHue,
 	interpolate,
 	toRGB,
 	fromRGB,

@@ -1,4 +1,5 @@
-const { guessType, convert } = require('./convert')
+const { guessType } = require('./type')
+const { convert } = require('./convert')
 const { methods } = require('./interpolate')
 const { binarySearch } = require('@kmamal/util/array/search/binary')
 
@@ -7,9 +8,10 @@ const makeScale = (_colors, _type) => {
 	const num = _colors.length
 	const colors = _colors.map((color) => convert(color, type))
 	const method = methods[type]
+	const scaling = num - 1
 
 	return (x) => {
-		const scaled = x * num
+		const scaled = x * scaling
 		const ai = Math.floor(scaled)
 		const a = colors[ai]
 		if (ai === scaled) { return a }

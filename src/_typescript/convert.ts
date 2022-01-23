@@ -3,7 +3,7 @@ import * as Lab from './lab_helpers'
 type Color = [number, number, number, number|undefined] ;
 
 
-// LAB <==> RBG
+// LAB <==> RGB
 
 export const lab2rgb = function ([ l, a, b, alpha ]: Color): Color {
 	let y = (l + 16) / 116
