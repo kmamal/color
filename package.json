@@ -16,8 +16,10 @@
     "./interpolate": "./src/interpolate.js",
     "./rgb": "./src/rgb.js",
     "./scale": "./src/scale.js",
+    "./type": "./src/type.js",
     "./convert": "./src/convert.js",
-    "./cubehelix": "./src/cubehelix.js"
+    "./cubehelix": "./src/cubehelix.js",
+    "./hsl": "./src/hsl.js"
   },
   "dependencies": {
     "@kmamal/util": "^0.0.73"
