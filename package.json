@@ -12,17 +12,19 @@
     "update-exports": "./scripts/update-exports.sh"
   },
   "exports": {
-    "./hsv": "./src/hsv.js",
     "./interpolate": "./src/interpolate.js",
-    "./rgb": "./src/rgb.js",
+    "./types/hsv": "./src/types/hsv.js",
+    "./types/rgb": "./src/types/rgb.js",
+    "./types": "./src/types/index.js",
+    "./types/oklch": "./src/types/oklch.js",
+    "./types/oklab": "./src/types/oklab.js",
+    "./types/hsl": "./src/types/hsl.js",
     "./scale": "./src/scale.js",
-    "./types": "./src/types.js",
+    "./hue": "./src/hue.js",
     "./names": "./src/names.js",
-    "./oklch": "./src/oklch.js",
     "./convert": "./src/convert.js",
     "./cubehelix": "./src/cubehelix.js",
-    "./oklab": "./src/oklab.js",
-    "./hsl": "./src/hsl.js"
+    "./guess-type": "./src/guess-type.js"
   },
   "dependencies": {
     "@kmamal/util": "^0.0.73"
