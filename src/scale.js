@@ -1,4 +1,4 @@
-const { guessType } = require('./types')
+const { guessType } = require('./guess-type')
 const { convert } = require('./convert')
 const { methods } = require('./interpolate')
 const { binarySearch } = require('@kmamal/util/array/search/binary')
@@ -22,28 +22,27 @@ const makeScale = (_colors, _type) => {
 	}
 }
 
-const makeWeightedSacle = (_colors, _type) => {
+const makeWeightedScale = (_colors, _type) => {
 	const type = _type ?? guessType(_colors[0][1])
 	const num = _colors.length
-	const weights = new Array(num)
+	const positions = new Array(num)
 	const colors = new Array(num)
-	let total = 0
 	for (let i = 0; i < num; i++) {
-		const [ weight, color ] = _colors[i]
-		total += weight
-		weights[i] = total
+		const [ position, color ] = _colors[i]
+		positions[i] = position
 		colors[i] = convert(color, type)
 	}
 	const method = methods[type]
 
 	return (x) => {
-		const ai = binarySearch(weights, x)
-		const aw = weights[ai]
+		const bi = binarySearch(positions, x) || 1
+		const bw = positions[bi]
+		const b = colors[bi]
+		if (x === bw) { return b }
+		const ai = bi - 1
+		const aw = positions[ai]
 		const a = colors[ai]
 		if (x === aw) { return a }
-		const bi = ai + 1
-		const bw = weights[bi]
-		const b = colors[bi]
 		const ratio = (x - aw) / (bw - aw)
 		return method(a, b, ratio)
 	}
@@ -51,5 +50,5 @@ const makeWeightedSacle = (_colors, _type) => {
 
 module.exports = {
 	makeScale,
-	makeWeightedSacle,
+	makeWeightedScale,
 }

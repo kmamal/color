@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "test": "./scripts/run-tests.sh",
-    "update-exports": "./scripts/update-exports.sh"
+    "update-exports": "node ./scripts/update-exports.mjs"
   },
   "exports": {
     "./interpolate": "./src/interpolate.js",
@@ -28,5 +28,8 @@
   },
   "dependencies": {
     "@kmamal/util": "^0.0.73"
+  },
+  "devDependencies": {
+    "@kmamal/testing": "^0.0.20"
   }
 }
