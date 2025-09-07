@@ -12,19 +12,19 @@
     "update-exports": "node ./scripts/update-exports.mjs"
   },
   "exports": {
+    "./names": "./src/names.js",
+    "./hue": "./src/hue.js",
+    "./convert": "./src/convert.js",
+    "./guess-type": "./src/guess-type.js",
+    "./scale": "./src/scale.js",
+    "./cubehelix": "./src/cubehelix.js",
     "./interpolate": "./src/interpolate.js",
+    "./types/oklab": "./src/types/oklab.js",
     "./types/hsv": "./src/types/hsv.js",
-    "./types/rgb": "./src/types/rgb.js",
     "./types": "./src/types/index.js",
     "./types/oklch": "./src/types/oklch.js",
-    "./types/oklab": "./src/types/oklab.js",
-    "./types/hsl": "./src/types/hsl.js",
-    "./scale": "./src/scale.js",
-    "./hue": "./src/hue.js",
-    "./names": "./src/names.js",
-    "./convert": "./src/convert.js",
-    "./cubehelix": "./src/cubehelix.js",
-    "./guess-type": "./src/guess-type.js"
+    "./types/rgb": "./src/types/rgb.js",
+    "./types/hsl": "./src/types/hsl.js"
   },
   "dependencies": {
     "@kmamal/util": "^0.2.29"
