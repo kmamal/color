@@ -17,7 +17,8 @@ const methods = Object.fromEntries(typeNames.map((type) => [ type, {} ]))
 			const b = _b.toLowerCase()
 			if (direction === 'to') {
 				primaries[a][b] = methods[a][b] = method
-			} else {
+			}
+			else {
 				primaries[b][a] = methods[b][a] = method
 			}
 			count++
@@ -49,7 +50,8 @@ const methods = Object.fromEntries(typeNames.map((type) => [ type, {} ]))
 
 				if (found) {
 					foundSome = true
-				} else {
+				}
+				else {
 					missing = true
 				}
 			}

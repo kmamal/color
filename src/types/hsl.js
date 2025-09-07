@@ -6,7 +6,7 @@ const { interpolateHue } = require('../hue')
 // HSV COLOR
 // - h [0-3)
 // - s [0-1]
-// - v [0-1]
+// - l [0-1]
 // - a* [0-1]
 
 const isMember = (x) => true

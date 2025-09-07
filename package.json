@@ -4,7 +4,7 @@
   "description": "color",
   "repository": {
     "type": "git",
-    "url": "git@github.com:kmamal/color.git"
+    "url": "git+ssh://git@github.com:kmamal/color.git"
   },
   "license": "MIT",
   "scripts": {
@@ -27,9 +27,9 @@
     "./guess-type": "./src/guess-type.js"
   },
   "dependencies": {
-    "@kmamal/util": "^0.0.73"
+    "@kmamal/util": "^0.2.29"
   },
   "devDependencies": {
-    "@kmamal/testing": "^0.0.20"
+    "@kmamal/testing": "^0.0.33"
   }
 }

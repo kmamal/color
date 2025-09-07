@@ -1,7 +1,7 @@
 const { guessType } = require('./guess-type')
 const { convert } = require('./convert')
 const { methods } = require('./interpolate')
-const { binarySearch } = require('@kmamal/util/array/search/binary')
+const { binarySearch } = require('@kmamal/util/array/searching/binary')
 
 const makeScale = (_colors, _type) => {
 	const type = _type ?? guessType(_colors[0])
